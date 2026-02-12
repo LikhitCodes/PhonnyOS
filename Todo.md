@@ -1,16 +1,16 @@
 # 📌 PhonnyOS – Development Roadmap
 
-> A custom x86-64 operating system built from scratch to deeply understand kernel design, memory management, scheduling, and networking.
+> A custom x86-64 or 32bit (we'll see) operating system built from scratch to deeply understand kernel design, memory management, scheduling, and networking.
 
 ---
 
 ## 🔹 Phase 0 – Environment Setup
 
-- [ ] Setup x86_64-elf cross compiler
-- [ ] Create Makefile build system
-- [ ] Configure QEMU for testing
-- [ ] Setup GDB debugging
-- [ ] Setup GRUB bootloader
+- [X] Setup x86_64-elf cross compiler
+- [X] Create Makefile build system
+- [X] Configure QEMU for testing
+- [X] Setup GDB debugging
+- [X] Setup GRUB bootloader
 - [ ] ISO build pipeline
 
 ---
