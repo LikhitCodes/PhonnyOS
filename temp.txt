@@ -1,0 +1,4 @@
+qemu-system-i386 -cdrom PhonnyOs.iso
+
+./qemu.sh
+

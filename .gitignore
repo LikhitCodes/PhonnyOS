@@ -1,0 +1,6 @@
+Dcoumentation/
+*.iso
+isodir
+sysroot
+EOF
+*.sh
