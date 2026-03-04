@@ -11,17 +11,17 @@
 - [X] Configure QEMU for testing
 - [X] Setup GDB debugging
 - [X] Setup GRUB bootloader
-- [ ] ISO build pipeline
+- [X] ISO build pipeline
 
 ---
 
 ## 🔹 Phase 1 – Boot & Kernel Initialization
 
-- [ ] Multiboot2 compliant kernel
-- [ ] Enter 64-bit Long Mode
-- [ ] Basic kernel entry point
-- [ ] VGA text output driver
-- [ ] Clear screen + print functions
+- [x] Multiboot2 compliant kernel
+- [X] Enter 32-bit Protected Mode
+- [X] Basic kernel entry point
+- [X] VGA text output driver
+- [X] Clear screen + print functions
 - [ ] Kernel panic handler
 
 ---

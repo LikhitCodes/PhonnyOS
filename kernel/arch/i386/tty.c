@@ -67,16 +67,25 @@ void terminal_putchar(char c)
 {
     unsigned char uc = c;
 
-    terminal_putentryat(uc,terminal_color,terminal_column,terminal_row);
-    terminal_column++;
+    // \n
+    if(c=='\n')
+    {
+        terminal_column=0;
+        terminal_row++;
+    }
+    else
+    {
+        terminal_putentryat(uc,terminal_color,terminal_column,terminal_row);
+        terminal_column++;
+    }
     //when column becomes 80(end of width) -> next row and column = 0
-    if(terminal_column == VGA_WIDTH)
+    if(terminal_column >= VGA_WIDTH)
     {
         terminal_column = 0;
         terminal_row++;
     }
     //when last row -> scroll and set row to last 
-    if(terminal_row == VGA_HEIGHT)
+    if(terminal_row >= VGA_HEIGHT)
     {
         terminal_scroll();
         terminal_row = VGA_HEIGHT - 1;
