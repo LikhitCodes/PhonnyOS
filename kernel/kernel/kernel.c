@@ -7,5 +7,5 @@ void kernel_main(void) {
 	gdt_init();
 	terminal_initialize();
 	printf("Hello, kernel World!\n");
-	printf("My name is Likhit");
+	printf("This is our OS");
 }
