@@ -1,5 +1,5 @@
 DEFAULT_HOST!=../default-host.sh
-HOST?=DEFAULT_HOST
+HOST?=$(DEFAULT_HOST)
 HOSTARCH!=../target-triplet-to-arch.sh $(HOST)
 
 CFLAGS?=-O2 -g
@@ -12,6 +12,8 @@ PREFIX?=/usr/local
 EXEC_PREFIX?=$(PREFIX)
 BOOTDIR?=$(EXEC_PREFIX)/boot
 INCLUDEDIR?=$(PREFIX)/include
+
+BUILDDIR=build
 
 CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra
 CPPFLAGS:=$(CPPFLAGS) -D__is_kernel -Iinclude
@@ -32,43 +34,43 @@ $(KERNEL_ARCH_OBJS) \
 kernel/kernel.o \
 
 OBJS=\
-$(ARCHDIR)/crti.o \
-$(ARCHDIR)/crtbegin.o \
-$(KERNEL_OBJS) \
-$(ARCHDIR)/crtend.o \
-$(ARCHDIR)/crtn.o \
+$(BUILDDIR)/$(ARCHDIR)/runtime/crti.o \
+$(BUILDDIR)/$(ARCHDIR)/crtbegin.o \
+$(addprefix $(BUILDDIR)/,$(KERNEL_OBJS)) \
+$(BUILDDIR)/$(ARCHDIR)/crtend.o \
+$(BUILDDIR)/$(ARCHDIR)/runtime/crtn.o \
 
 LINK_LIST=\
-$(LDFLAGS) \
-$(ARCHDIR)/crti.o \
-$(ARCHDIR)/crtbegin.o \
-$(KERNEL_OBJS) \
+$(BUILDDIR)/$(ARCHDIR)/runtime/crti.o \
+$(BUILDDIR)/$(ARCHDIR)/crtbegin.o \
+$(addprefix $(BUILDDIR)/,$(KERNEL_OBJS)) \
 $(LIBS) \
-$(ARCHDIR)/crtend.o \
-$(ARCHDIR)/crtn.o \
+$(BUILDDIR)/$(ARCHDIR)/crtend.o \
+$(BUILDDIR)/$(ARCHDIR)/runtime/crtn.o \
 
 .PHONY: all clean install install-headers install-kernel
-.SUFFIXES: .o .c .S
 
 all: phonnyos.kernel
 
-phonnyos.kernel: $(OBJS) $(ARCHDIR)/linker.ld
-	$(CC) -T $(ARCHDIR)/linker.ld -o $@ $(CFLAGS) $(LINK_LIST)
+phonnyos.kernel: $(OBJS) $(ARCHDIR)/linker/linker.ld
+	$(CC) -T $(ARCHDIR)/linker/linker.ld -o $@ $(CFLAGS) $(LINK_LIST)
 	grub-file --is-x86-multiboot phonnyos.kernel
 
-$(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
+$(BUILDDIR)/$(ARCHDIR)/crtbegin.o $(BUILDDIR)/$(ARCHDIR)/crtend.o:
+	mkdir -p $(dir $@)
 	OBJ=`$(CC) $(CFLAGS) $(LDFLAGS) -print-file-name=$(@F)` && cp "$$OBJ" $@
 
-.c.o:
+$(BUILDDIR)/%.o: %.c
+	mkdir -p $(dir $@)
 	$(CC) -MD -c $< -o $@ -std=gnu11 $(CFLAGS) $(CPPFLAGS)
 
-.S.o:
+$(BUILDDIR)/%.o: %.S
+	mkdir -p $(dir $@)
 	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
 
 clean:
+	rm -rf build
 	rm -f phonnyos.kernel
-	rm -f $(OBJS) *.o */*.o */*/*.o
-	rm -f $(OBJS:.o=.d) *.d */*.d */*/*.d
 
 install: install-headers install-kernel
 
