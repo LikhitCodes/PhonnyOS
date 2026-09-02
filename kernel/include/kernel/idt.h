@@ -5,11 +5,11 @@
 
 typedef struct idt_entry
 {
-    uint16_t isr_low;
-    uint16_t kernel_cs;
-    uint8_t reserved;
-    uint8_t attributes;
-    uint16_t isr_high; 
+    uint16_t isr_low;                   //lower 16 bits
+    uint16_t kernel_cs;                 //gdt segment selector (CPU loads this in CS before calling isr)
+    uint8_t reserved;                   
+    uint8_t attributes;                 //type and attributes
+    uint16_t isr_high;                  //higher 16bits
 }__attribute__((packed)) idt_entry_t;
 
 typedef struct idtr

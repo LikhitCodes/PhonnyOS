@@ -5,13 +5,18 @@
 .macro isr_err_stub num
 .global isr_stub_\num
 isr_stub_\num:
+    pushl $\num
     call exception_handler
+    ; addl $4, %esp
+    ; addl $4, %esp
     iret
 .endm
 
 .macro isr_no_err_stub num
 .global isr_stub_\num
 isr_stub_\num:
+    pushl $0
+    pushl $\num
     call exception_handler
     iret
 .endm
